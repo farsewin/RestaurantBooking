@@ -1,14 +1,15 @@
 package com.example.restaurantbookingapp.auth;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.restaurantbookingapp.MainActivity;
@@ -20,11 +21,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailInput, passwordInput;
     private FirebaseAuth firebaseAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login); // make sure this layout file exists
+        setContentView(R.layout.activity_login);
 
         // Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -40,8 +40,13 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
 
-            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                Toast.makeText(LoginActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(email)) {
+                showAlert("Please enter your email");
+                return;
+            }
+
+            if (TextUtils.isEmpty(password)) {
+                showAlert("Please enter your password");
                 return;
             }
 
@@ -53,12 +58,20 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         } else {
                             String errorMsg = task.getException() != null ? task.getException().getMessage() : "Login failed.";
-                            Toast.makeText(LoginActivity.this, "Login failed: " + errorMsg, Toast.LENGTH_LONG).show();
+                            showAlert("Login failed: " + errorMsg);
                         }
                     });
         });
 
         // Redirect to register
         registerText.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+    }
+
+    private void showAlert(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton("OK", null)
+                .show();
     }
 }
