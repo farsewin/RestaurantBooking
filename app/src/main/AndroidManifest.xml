@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-    xmlns:tools="http://schemas.android.com/tools" package="com.example.restaurantbookingapp">
-=======
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.restaurantbookingapp">
->>>>>>> master
 
     <application
         android:allowBackup="true"
@@ -17,34 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RestaurantBookingApp"
         tools:targetApi="31">
-<<<<<<< HEAD
-=======
 
         <!-- Login Activity (Main Launcher) -->
->>>>>>> master
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-<<<<<<< HEAD
-
-=======
->>>>>>> master
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-<<<<<<< HEAD
-        <!-- RegisterActivity declaration -->
-=======
-        <!-- Restaurant Card Activity -->
-        <activity
-            android:name=".RestaurantCardActivity"
-            android:exported="false" />
-
         <!-- Register Activity -->
->>>>>>> master
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="true">
@@ -53,16 +33,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-    </application>
-</manifest>
-=======
 
-        <!-- Reservation Activity (تمت إضافته هنا) -->
+        <!-- Restaurant Card Activity -->
+        <activity
+            android:name=".RestaurantCardActivity"
+            android:exported="false" />
+
+        <!-- Reservation Activity -->
         <activity
             android:name=".ReservationActivity"
             android:exported="false" />
 
     </application>
 </manifest>
->>>>>>> master
