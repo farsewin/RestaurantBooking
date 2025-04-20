@@ -38,13 +38,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.activity)
-<<<<<<< HEAD
-=======
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("com.google.android.material:material:1.11.0")
 
 
->>>>>>> master
 
     // Firebase
     implementation(platform(libs.firebase.bom))

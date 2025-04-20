@@ -47,3 +47,4 @@ render.experimental.xml
 .cxx
 local.properties
 >>>>>>> master
+gradle/libs.versions.toml
