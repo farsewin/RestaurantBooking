@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.restaurantbookingapp.MainActivity;
 import com.example.restaurantbookingapp.R;
+import com.example.restaurantbookingapp.RestaurantCardActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, RestaurantCardActivity.class));
                             finish();
                         } else {
                             String errorMsg = task.getException() != null ? task.getException().getMessage() : "Login failed.";

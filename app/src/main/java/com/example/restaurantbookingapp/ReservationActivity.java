@@ -2,38 +2,42 @@ package com.example.restaurantbookingapp;
 
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.material.chip.ChipGroup;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class ReservationActivity extends AppCompatActivity {
 
     private TextView currentDateTextView, monthYearTextView, peopleCountTextView;
-    private ImageButton prevMonthButton, nextMonthButton, decreaseBtn, increaseBtn;
+    private MaterialButton prevMonthButton, nextMonthButton, decreaseBtn, increaseBtn;
     private GridLayout calendarGrid;
     private ChipGroup timeSlotsContainer;
+    private Button reserveButton;
 
     private Calendar calendar;
+    private Calendar selectedDate = null;
+
+    private TextView selectedDayView = null;
     private int peopleCount = 2;
     private String selectedTime = null;
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class ReservationActivity extends AppCompatActivity {
         increaseBtn = findViewById(R.id.increaseBtn);
         calendarGrid = findViewById(R.id.calendarGrid);
         timeSlotsContainer = findViewById(R.id.timeSlotsContainer);
-        Button reserveButton = findViewById(R.id.reserveButton);
+        reserveButton = findViewById(R.id.reserveButton);
 
         calendar = Calendar.getInstance();
         updateCalendar();
@@ -86,22 +90,43 @@ public class ReservationActivity extends AppCompatActivity {
         });
 
         reserveButton.setOnClickListener(v -> {
+            if (selectedDate == null) {
+                Toast.makeText(this, "Please select a day", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (selectedTime == null) {
                 Toast.makeText(this, "Please select a time slot", Toast.LENGTH_SHORT).show();
-            } else {
-                // Add Firebase or local reservation logic here
-                Toast.makeText(this, "Reservation confirmed!", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String reservationDateStr = sdf.format(selectedDate.getTime());
+
+            Map<String, Object> reservation = new HashMap<>();
+            reservation.put("peopleCount", peopleCount);
+            reservation.put("selectedTime", selectedTime);
+            reservation.put("reservationDate", reservationDateStr);
+
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                reservation.put("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            }
+
+            db.collection("reservations")
+                    .add(reservation)
+                    .addOnSuccessListener(documentReference -> {
+                        Toast.makeText(this, "Reservation saved to Firebase!", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed to save: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
         });
     }
 
     private void updateCalendar() {
         calendarGrid.removeAllViews();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-        monthYearTextView.setText(sdf.format(calendar.getTime()));
 
-        sdf = new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());
-        currentDateTextView.setText("Today, " + sdf.format(Calendar.getInstance().getTime()));
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+        monthYearTextView.setText(monthFormat.format(calendar.getTime()));
 
         Calendar tempCal = (Calendar) calendar.clone();
         tempCal.set(Calendar.DAY_OF_MONTH, 1);
@@ -111,20 +136,45 @@ public class ReservationActivity extends AppCompatActivity {
         for (int i = 0; i < startDay + maxDays; i++) {
             TextView dayView = new TextView(this);
             dayView.setGravity(Gravity.CENTER);
-            dayView.setPadding(0, 20, 0, 20);
+            dayView.setPadding(0, 30, 0, 30);
 
             if (i >= startDay) {
                 int day = i - startDay + 1;
                 dayView.setText(String.valueOf(day));
-                dayView.setOnClickListener(v -> {
-                    Toast.makeText(this, "Selected day: " + day, Toast.LENGTH_SHORT).show();
-                });
+
+                Calendar now = Calendar.getInstance();
+                Calendar candidate = (Calendar) calendar.clone();
+                candidate.set(Calendar.DAY_OF_MONTH, day);
+
+                if (candidate.before(now)) {
+                    dayView.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray));
+                } else {
+                    dayView.setOnClickListener(v -> {
+                        if (selectedDayView != null) {
+                            selectedDayView.setBackgroundColor(0x00000000); // transparent
+                            selectedDayView.setTextColor(ContextCompat.getColor(this, android.R.color.black));
+                        }
+                        selectedDayView = (TextView) v;
+                        selectedDayView.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
+                        selectedDayView.setTextColor(ContextCompat.getColor(this, android.R.color.white));
+
+                        selectedDate = (Calendar) calendar.clone();
+                        selectedDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(selectedDayView.getText().toString()));
+
+                        SimpleDateFormat selectedFormat = new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());
+                        currentDateTextView.setText(selectedFormat.format(selectedDate.getTime()));
+                    });
+                }
             }
 
-            calendarGrid.addView(dayView, new GridLayout.LayoutParams(
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams(
                     GridLayout.spec(GridLayout.UNDEFINED, 1f),
                     GridLayout.spec(GridLayout.UNDEFINED, 1f)
-            ));
+            );
+            params.width = 0;
+            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+
+            calendarGrid.addView(dayView, params);
         }
     }
 
