@@ -1,5 +1,6 @@
 package com.example.restaurantbookingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.Button;
@@ -115,6 +116,9 @@ public class ReservationActivity extends AppCompatActivity {
                     .add(reservation)
                     .addOnSuccessListener(documentReference -> {
                         Toast.makeText(this, "Reservation saved to Firebase!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ReservationActivity.this, SuccessActivity.class);
+                        startActivity(intent);
+                        finish();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Failed to save: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -133,29 +137,37 @@ public class ReservationActivity extends AppCompatActivity {
         int startDay = tempCal.get(Calendar.DAY_OF_WEEK) - 1;
         int maxDays = tempCal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+        Calendar today = Calendar.getInstance();
+
         for (int i = 0; i < startDay + maxDays; i++) {
             TextView dayView = new TextView(this);
             dayView.setGravity(Gravity.CENTER);
             dayView.setPadding(0, 30, 0, 30);
+            dayView.setTextSize(16);
 
             if (i >= startDay) {
                 int day = i - startDay + 1;
                 dayView.setText(String.valueOf(day));
 
-                Calendar now = Calendar.getInstance();
                 Calendar candidate = (Calendar) calendar.clone();
                 candidate.set(Calendar.DAY_OF_MONTH, day);
 
-                if (candidate.before(now)) {
+                boolean isPast = candidate.before(today) && !isSameDay(candidate, today);
+                if (isPast) {
                     dayView.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray));
                 } else {
+                    if (isSameDay(candidate, today)) {
+                        dayView.setBackgroundResource(R.drawable.today_day_background);
+                    }
+
                     dayView.setOnClickListener(v -> {
                         if (selectedDayView != null) {
-                            selectedDayView.setBackgroundColor(0x00000000); // transparent
+                            selectedDayView.setBackgroundResource(0); // Reset background
                             selectedDayView.setTextColor(ContextCompat.getColor(this, android.R.color.black));
                         }
+
                         selectedDayView = (TextView) v;
-                        selectedDayView.setBackgroundColor(ContextCompat.getColor(this, R.color.orange));
+                        selectedDayView.setBackgroundResource(R.drawable.selected_day_background);
                         selectedDayView.setTextColor(ContextCompat.getColor(this, android.R.color.white));
 
                         selectedDate = (Calendar) calendar.clone();
@@ -178,8 +190,17 @@ public class ReservationActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isSameDay(Calendar c1, Calendar c2) {
+        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
+    }
+
     private void populateTimeSlots() {
-        String[] times = {"12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"};
+        String[] times = {
+                "10:00 PM", "10:30 PM", "11:00 PM", "11:30 PM",
+                "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM",
+                "2:00 PM", "2:30 PM", "3:00 PM"
+        };
         for (String time : times) {
             Chip chip = new Chip(this);
             chip.setText(time);

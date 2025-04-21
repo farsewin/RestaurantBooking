@@ -13,4 +13,6 @@
     <string name="prev_month">Mois précédent</string>
     <string name="next_month">Mois suivant</string>
     <string name="reservation_confirmed">Réservation confirmée 🎉</string>
+    <string name="success_icon_description">Success icon</string>
+    <string name="reservation_success_message">🎉 Thank you, your reservation has been successful!</string>
 </resources>

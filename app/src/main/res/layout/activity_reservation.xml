@@ -132,26 +132,31 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/decreaseBtn"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:gravity="center"
                         app:icon="@drawable/ic_remove"
                         android:contentDescription="Decrease people count" />
+
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/peopleCountTextView"
                         android:layout_width="48dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:gravity="center"
                         android:text="2"
-                        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium" />
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                        android:layout_marginHorizontal="8dp" />
+
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/increaseBtn"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:gravity="center"
                         app:icon="@drawable/ic_add"
-                        android:contentDescription="Increase people count" />
+                        android:contentDescription="Decrease people count" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
