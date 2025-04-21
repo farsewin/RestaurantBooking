@@ -4,179 +4,261 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="16dp"
-    android:layout_marginTop="16dp"
-
-    android:radius="12dp"
-    android:elevation="6dp"
+    android:layout_margin="16dp"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="12dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="32dp"
-        >
+        android:layout_height="wrap_content">
 
-        <!-- فيديو المطعم -->
+        <!-- Restaurant Video -->
         <VideoView
             android:id="@+id/restaurantVideo"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
             android:layout_gravity="center"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- اسم المطعم -->
-        <TextView
-            android:id="@+id/restaurantName"
-            android:layout_width="match_parent"
+        <!-- Content Container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Restaurant Sphère"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:textColor="#000000"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            android:padding="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/restaurantVideo">
 
-        <!-- موقع المطعم -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:id="@+id/locationIcon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_location_on"
-                app:tint="#757575"
-                android:contentDescription="Location Icon"/>
-
+            <!-- Restaurant Name -->
             <TextView
-                android:id="@+id/restaurantLocation"
+                android:id="@+id/restaurantName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="1"
+                android:text="Restaurant Sphère"
+                android:textColor="#212121"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Location Layout -->
+            <LinearLayout
+                android:id="@+id/locationLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Paris, Rue La Boétie"
-                android:textColor="#666666"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/restaurantName">
+
+                <ImageView
+                    android:id="@+id/locationIcon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="Location Icon"
+                    android:src="@drawable/ic_location_on"
+                    app:tint="#757575" />
+
+                <TextView
+                    android:id="@+id/restaurantLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins"
+                    android:maxLines="1"
+                    android:text="Paris, Rue La Boétie"
+                    android:textColor="#757575"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Rating Layout -->
+            <LinearLayout
+                android:id="@+id/ratingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/locationLayout">
+
+                <RatingBar
+                    android:id="@+id/restaurantRating"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:progressTint="#FF9800"
+                    android:rating="4.5"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/ratingValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="4.5"
+                    android:textColor="#212121"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <!-- Restaurant Description -->
+            <TextView
+                android:id="@+id/restaurantDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_light"
+                android:lineSpacingExtra="4dp"
+                android:text="A fine-dining restaurant offering a blend of international flavors and a charming French atmosphere. Ideal for quiet evenings and fine dining lovers."
+                android:textColor="#424242"
                 android:textSize="14sp"
-                android:maxLines="1"
-                android:ellipsize="end"/>
-        </LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingLayout" />
 
-        <!-- تقييم المطعم -->
-        <RatingBar
-            android:id="@+id/restaurantRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:rating="4.5"
-            android:stepSize="0.5"
-            android:isIndicator="true"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:progressTint="#FF9800"/>
+            <!-- Divider -->
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="#E0E0E0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/restaurantDescription" />
 
-        <!-- زر الحجز -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bookButton"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Reserve a Table Now"
-            android:icon="@drawable/ic_reserve"
-            app:iconGravity="textStart"
-            android:textAllCaps="false"
-            app:backgroundTint="#FF9800"
-            app:cornerRadius="8dp"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="8dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"/>
-
-        <!-- وصف المطعم -->
-        <TextView
-            android:id="@+id/restaurantDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="A fine-dining restaurant offering a blend of international flavors and a charming French atmosphere. Ideal for quiet evenings and fine dining lovers."
-            android:textColor="#444444"
-            android:textSize="14sp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- عروض المناسبات -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="🎉 Special Offers"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- عرض رأس السنة -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Special Offers Title -->
+            <TextView
+                android:id="@+id/specialOffersTitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="#FFF3E0"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_vertical">
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Special Offers"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_fireworks"
-                    android:layout_marginEnd="8dp"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="New Year's Eve Special: 20% off + live music!"
-                    android:textColor="#BF360C"
-                    android:textSize="14sp"/>
-            </LinearLayout>
-
-            <!-- عرض عيد الحب -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Special Offers Container -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/specialOffersCard"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:background="#FCE4EC"
-                android:gravity="center_vertical">
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/specialOffersTitle">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_heart"
-                    android:layout_marginEnd="8dp"/>
-
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Valentine's Day Dinner: Romantic setup and free dessert!"
-                    android:textColor="#880E4F"
-                    android:textSize="14sp"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-        </LinearLayout>
-    </LinearLayout>
+                    <!-- New Year's Eve Offer -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@drawable/ic_fireworks"
+                            app:tint="#FF7043" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins"
+                            android:text="New Year's Eve Special: 20% off + live music!"
+                            android:textColor="#616161"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Valentine's Day Offer -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@drawable/ic_heart"
+                            app:tint="#E91E63" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/poppins"
+                            android:text="Valentine's Day Dinner: Romantic setup and free dessert!"
+                            android:textColor="#616161"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Reserve Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bookButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins_medium"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:letterSpacing="0.05"
+                android:text="Reserve a Table"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:backgroundTint="#FF9800"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_calendar"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconSize="24dp"
+                app:iconTint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/specialOffersCard" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
