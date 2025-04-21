@@ -12,30 +12,31 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Title with Material 3 Typography -->
+        <!-- Title -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Choose the date and number of people"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Current Date -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/currentDateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="Today, April 19" />
 
-        <!-- Month Navigation with Material 3 Icons -->
+        <!-- Calendar Section -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/calendarCard"
             android:layout_width="0dp"
@@ -43,9 +44,9 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currentDateTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/currentDateTextView">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,6 +54,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Month Controls -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +67,6 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         app:icon="@drawable/ic_chevron_left"
-                        app:iconTint="?attr/colorOnSurface"
                         android:contentDescription="Previous month" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -83,22 +84,21 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         app:icon="@drawable/ic_chevron_right"
-                        app:iconTint="?attr/colorOnSurface"
                         android:contentDescription="Next month" />
                 </LinearLayout>
 
-                <!-- Calendar Grid -->
+                <!-- Grid Calendar -->
                 <GridLayout
                     android:id="@+id/calendarGrid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:columnCount="7"
-                    android:rowCount="7" />
+                    android:rowCount="6" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- People Counter with Material 3 Card -->
+        <!-- People Counter -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/peopleCard"
             android:layout_width="0dp"
@@ -106,9 +106,9 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calendarCard"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/calendarCard">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -132,12 +132,10 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/decreaseBtn"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:gravity="center"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         app:icon="@drawable/ic_remove"
                         android:contentDescription="Decrease people count" />
-
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/peopleCountTextView"
@@ -148,20 +146,18 @@
                         android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                         android:layout_marginHorizontal="8dp" />
 
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/increaseBtn"
                         style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:gravity="center"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         app:icon="@drawable/ic_add"
-                        android:contentDescription="Decrease people count" />
+                        android:contentDescription="Increase people count" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Time Slots with Material 3 Card -->
+        <!-- Time Slot Picker -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/timeCard"
             android:layout_width="0dp"
@@ -169,9 +165,9 @@
             android:layout_marginTop="16dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/peopleCard"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/peopleCard">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,7 +192,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Reservation Button with Material 3 styling -->
+        <!-- Confirm Reservation Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/reserveButton"
             android:layout_width="0dp"
@@ -206,10 +202,10 @@
             android:text="Confirm the reservation"
             android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             app:cornerRadius="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/timeCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.restaurantbookingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
@@ -78,8 +79,10 @@ public class ReservationActivity extends AppCompatActivity {
         });
 
         increaseBtn.setOnClickListener(v -> {
-            peopleCount++;
-            peopleCountTextView.setText(String.valueOf(peopleCount));
+            if (peopleCount < 5) {
+                peopleCount++;
+                peopleCountTextView.setText(String.valueOf(peopleCount));
+            }
         });
 
         populateTimeSlots();
@@ -143,8 +146,12 @@ public class ReservationActivity extends AppCompatActivity {
         for (int i = 0; i < startDay + maxDays; i++) {
             TextView dayView = new TextView(this);
             dayView.setGravity(Gravity.CENTER);
-            dayView.setPadding(0, 30, 0, 30);
+            dayView.setPadding(0, 15, 0, 15);
             dayView.setTextSize(16);
+            // Make it a square (circle effect)
+            int size = (int) getResources().getDimension(R.dimen.calendar_day_size);
+            dayView.setWidth(size);
+            dayView.setHeight(size);
 
             if (i >= startDay) {
                 int day = i - startDay + 1;
@@ -157,9 +164,6 @@ public class ReservationActivity extends AppCompatActivity {
                 if (isPast) {
                     dayView.setTextColor(ContextCompat.getColor(this, android.R.color.darker_gray));
                 } else {
-                    if (isSameDay(candidate, today)) {
-                        dayView.setBackgroundResource(R.drawable.today_day_background);
-                    }
 
                     dayView.setOnClickListener(v -> {
                         if (selectedDayView != null) {
@@ -180,12 +184,8 @@ public class ReservationActivity extends AppCompatActivity {
                 }
             }
 
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams(
-                    GridLayout.spec(GridLayout.UNDEFINED, 1f),
-                    GridLayout.spec(GridLayout.UNDEFINED, 1f)
-            );
-            params.width = 0;
-            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.setMargins(0, 8, 0, 8); // optional spacing
 
             calendarGrid.addView(dayView, params);
         }
@@ -199,8 +199,8 @@ public class ReservationActivity extends AppCompatActivity {
     private void populateTimeSlots() {
         String[] times = {
                 "10:00 PM", "10:30 PM", "11:00 PM", "11:30 PM",
-                "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM",
-                "2:00 PM", "2:30 PM", "3:00 PM"
+                "12:00 PM", "12:30 AM", "1:00 AM", "1:30 AM",
+                "2:00 AM"
         };
         for (String time : times) {
             Chip chip = new Chip(this);
