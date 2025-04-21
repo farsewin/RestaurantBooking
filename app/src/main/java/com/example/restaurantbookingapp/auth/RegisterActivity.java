@@ -11,11 +11,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.restaurantbookingapp.R;
+import com.example.restaurantbookingapp.model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText emailInput, passwordInput, confirmPasswordInput;
+    private EditText nameInput, emailInput, passwordInput, confirmPasswordInput;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -27,19 +30,20 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         // Find views
+        nameInput = findViewById(R.id.nameInput);
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         Button registerButton = findViewById(R.id.registerButton);
         TextView loginText = findViewById(R.id.loginText);
 
-        // Register button action
         registerButton.setOnClickListener(v -> {
+            String name = nameInput.getText().toString().trim();
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
             String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
-            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
                 Toast.makeText(RegisterActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -52,9 +56,20 @@ public class RegisterActivity extends AppCompatActivity {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            finish();
+                            String uid = firebaseAuth.getCurrentUser().getUid();
+
+                            // Save full name to Firestore
+                            FirebaseFirestore.getInstance().collection("users")
+                                    .document(uid)
+                                    .set(new User(name, email)) // See User class below
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(RegisterActivity.this, "Failed to save user info: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                    });
                         } else {
                             String error = task.getException() != null ? task.getException().getMessage() : "Registration failed";
                             Toast.makeText(RegisterActivity.this, error, Toast.LENGTH_LONG).show();
